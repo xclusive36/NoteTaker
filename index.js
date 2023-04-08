@@ -13,6 +13,23 @@ app.get("/api/notes", function (req, res) {
   res.sendFile(path.join(__dirname, "./db/db.json")); // send notes to client
 });
 
+app.delete("/api/notes/:id", function (req, res) {
+  // get delete request from client, delete note from db.json
+
+  fs.readFile("./db/db.json", "utf8", (err, data) => {
+    // read db.json
+    if (err) throw err; // throw error if error
+    const notes = JSON.parse(data); // parse db.json
+    const newNotes = notes.filter((note) => note.id !== req.params.id); // filter out note with id from notes array
+
+    fs.writeFile("./db/db.json", JSON.stringify(newNotes), (err) => {
+      // write new notes array to db.json
+      if (err) throw err; // throw error if error
+      res.status(200).json({ success: "Note successfully deleted!" });
+    });
+  });
+});
+
 app.post("/api/notes", function (req, res) {
   // get post request from client, add note to db.json
 
@@ -25,7 +42,7 @@ app.post("/api/notes", function (req, res) {
     fs.writeFile("./db/db.json", JSON.stringify(notes), (err) => {
       // write new notes array to db.json
       if (err) throw err; // throw error if error
-      res.status(200).json({success: 'Note successfully saved!'});
+      res.status(200).json({ success: "Note successfully saved!" });
     });
   });
 });
