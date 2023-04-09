@@ -3,7 +3,7 @@ const path = require("path"); // require path
 const fs = require("fs"); // require fs
 
 const app = express(); // create express app
-const port = 3000; // set port
+const port = server.listen(process.env.PORT || 3000);
 
 // app.use(express.static("public")); // set static folder
 // app.use(express.json()); // parse JSON
